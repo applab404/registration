@@ -38,6 +38,22 @@ class RegistrationPageState extends State<RegistrationPage> {
     }
   }
 
+  bool get isEnabled {
+    return nameCtrl.text.isNotEmpty &&
+        emailCtrl.text.isNotEmpty &&
+        passwordCtrl.text.isNotEmpty &&
+        dob != null &&
+        agreedToTerms;
+  }
+
+  void resetForm() {
+    formKey.currentState!.reset();
+    agreedToTerms = false;
+    gender = null;
+    profileImage = null;
+    setState(() {});
+  }
+
   void toggleProfileUpload() => setState(() => profileImage = null);
 
   void setGender(String? value) => setState(() => gender = value);

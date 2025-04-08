@@ -74,10 +74,15 @@ class RegistrationView extends StatelessWidget {
               ),
             ),
           ),
+          floatingActionButton: IconButton(
+            iconSize: 30,
+            onPressed: state.resetForm,
+            icon: const Icon(Icons.refresh, color: AppColors.primary),
+          ),
           bottomNavigationBar: Padding(
             padding: const EdgeInsets.all(10),
             child: ElevatedButton(
-              onPressed: state.submitForm,
+              onPressed: !state.isEnabled ? null : state.submitForm,
               child: const Text('Register'),
             ),
           ),
