@@ -43,6 +43,7 @@ class RegistrationPageState extends State<RegistrationPage> {
         emailCtrl.text.isNotEmpty &&
         passwordCtrl.text.isNotEmpty &&
         dob != null &&
+        gender != null &&
         agreedToTerms;
   }
 
