@@ -52,10 +52,10 @@ class RegistrationPageState extends State<RegistrationPage> {
     nameCtrl.clear();
     emailCtrl.clear();
     passwordCtrl.clear();
-    setState(() => agreedToTerms = false);
-    setState(() => gender = null);
-    setState(() => dob = null);
-    setState(() => profileImage = null);
+    setAgreement(false);
+    setGender(null);
+    setDOB(null);
+    toggleProfileUpload();
   }
 
   void toggleProfileUpload() => setState(() => profileImage = null);
