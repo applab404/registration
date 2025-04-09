@@ -49,10 +49,13 @@ class RegistrationPageState extends State<RegistrationPage> {
 
   void resetForm() {
     formKey.currentState!.reset();
-    agreedToTerms = false;
-    gender = null;
-    profileImage = null;
-    setState(() {});
+    nameCtrl.clear();
+    emailCtrl.clear();
+    passwordCtrl.clear();
+    setState(() => agreedToTerms = false);
+    setState(() => gender = null);
+    setState(() => dob = null);
+    setState(() => profileImage = null);
   }
 
   void toggleProfileUpload() => setState(() => profileImage = null);
