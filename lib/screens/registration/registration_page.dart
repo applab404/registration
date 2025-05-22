@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:registration/widgets/custom_snackbar.dart';
-import 'registration_view.dart';
+import 'package:registration/screens/registration/registration_view.dart';
+import 'package:registration/services/auth_service.dart';
+import 'package:registration/screens/home/home_page.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -24,18 +26,50 @@ class RegistrationPageState extends State<RegistrationPage> {
   File? profileImage;
 
   List<String> genderOptions = ['Male', 'Female', 'Other'];
+  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
     return RegistrationView(this);
   }
 
-  void submitForm() {
-    if (formKey.currentState!.validate() && agreedToTerms) {
-      CustomSnackbar.show(context, 'Registration Successful!');
-    } else if (!agreedToTerms) {
-      CustomSnackbar.show(context, 'Please agree to terms', success: false);
+  Future<void> submitForm() async {
+    if (!_isFormComplete()) {
+      CustomSnackbar.show(
+        context,
+        'Please complete all fields',
+        success: false,
+      );
+      return;
     }
+
+    try {
+      await _authService.registerUser(
+        name: nameCtrl.text.trim(),
+        email: emailCtrl.text.trim(),
+        password: passwordCtrl.text,
+        gender: gender!,
+        dob: dob!,
+      );
+      CustomSnackbar.show(context, 'Registration Successful!');
+      _navigateToHome();
+    } catch (e) {
+      CustomSnackbar.show(context, 'Registration failed: $e', success: false);
+    }
+  }
+
+  bool _isFormComplete() {
+    return formKey.currentState?.validate() == true &&
+        agreedToTerms &&
+        dob != null &&
+        gender != null;
+  }
+
+  void _navigateToHome() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const HomePage()),
+    );
   }
 
   bool get isEnabled {
@@ -55,6 +89,9 @@ class RegistrationPageState extends State<RegistrationPage> {
     setAgreement(false);
     setGender(null);
     setDOB(null);
+    nameCtrl.clear();
+    emailCtrl.clear();
+    passwordCtrl.clear();
     toggleProfileUpload();
   }
 
